@@ -70,3 +70,10 @@ $ woh >temp
 -bash: woh: command not found
 ```
 and `temp` will be empty file.
+
+## Exercise 1-7.
+> Explain the differences between
+```
+$ who | sort # this will direct the output of who to input of sort
+$ who >sort # this will create a file called 'sort' and write the output of who to it. 
+```
