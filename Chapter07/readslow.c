@@ -11,7 +11,7 @@ int main (argc, argv)
     int n;
     int t = 10;
 
-    if (argc > 1) { t = atoi(argv[1]); }
+    if (argc > 1 && argv[1][0] == '-') { t = atoi(&argv[1][1]); }
 
     for (;;) {
         while ((n = read(0, buf, sizeof buf)) > 0)
