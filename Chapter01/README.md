@@ -48,5 +48,23 @@ ls: *: No such file or directory  *
 ```
 $ ls >ls.outside
 ```
-> causes ls.out to be included in the list of names.
-Redirection '>' will first be evaluated, therefore by the time `ls` runs the output file has been created already. See [this link](https://askubuntu.com/questions/728382/why-does-ls-ls-out-cause-ls-out-to-be-included-in-list-of-names) for details.
+> causes `ls.out` to be included in the list of names.
+Redirection `>` will first be evaluated, therefore by the time `ls` runs the output file has been created already. See [this link](https://askubuntu.com/questions/728382/why-does-ls-ls-out-cause-ls-out-to-be-included-in-list-of-names) for details.
+
+## Exercise 1-6.
+> Explain the output from
+```
+$ wc temp >temp
+```
+> If you misspell a command name, as in
+```
+$ woh >temp
+```
+> what happens?
+After first command, `temp` will be like        0       0       0 temp
+For misspell command,
+```
+$ woh >temp
+-bash: woh: command not found
+```
+and `temp` will be empty file.
