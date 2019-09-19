@@ -61,7 +61,9 @@ $ wc temp >temp
 $ woh >temp
 ```
 > what happens?
+
 After first command, `temp` will be like        0       0       0 temp
+
 For misspell command,
 ```
 $ woh >temp
