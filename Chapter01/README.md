@@ -27,3 +27,26 @@ $ ls /usr/games
 ```
 ls: /usr/games: No such file or directory (¯―¯٥)
 ```
+
+## Exercise 1-4.
+> What are the differences among these commands?
+```
+$ ls junk                         $ echo junk
+to be or not to be                junk
+$ ls /                            $ echo /
+Applications  cores               /
+$ ls                              $ echo
+README.md                         
+$ ls *                            $ echo *
+README.md                         README.md
+$ ls '*'                          $ echo '*'
+ls: *: No such file or directory  *
+```
+
+## Exercise 1-5.
+> Explain why
+```
+$ ls >ls.outside
+```
+> causes ls.out to be included in the list of names.
+Redirection '>' will first be evaluated, therefore by the time `ls` runs the output file has been created already. See [this link](https://askubuntu.com/questions/728382/why-does-ls-ls-out-cause-ls-out-to-be-included-in-list-of-names) for details.
