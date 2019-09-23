@@ -39,18 +39,25 @@ chmod 400 ~/.ssh/<somekey>
 ```
 $ ls -ld /usr/you
 ```
+There are four files inside the `recipes` folder.
+
+2 links to `cookies` and `pie` files inside `recipes`
+
+1 link to current dir `.`
+
+1 link to upper dir `..`
 
 ## Exercise 2-7.
 > What is the difference between
 ```
-$ mv junk junk1
+$ mv junk junk1 # junk1 and junk are one file with different name
 ```
 and
 ```
-$ cp junk junk1
+$ cp junk junk1 # junk1 and junk are different file with same content
 $ rm junk
 ```
-Hint: make a link to junk, then try it.
+> Hint: make a link to junk, then try it.
 
 ## Exercise 2-8.
 > `cp` doesn't copy subdirectories, it just copies files at the first level of a hierarchy. What does it do if one of the argument files is a directory? Is this kind or even sensible? Discuss the relative merits of three possibilities: an option to `cp` to descend directories, a separate command `rcp` (recursive copy) to do the job, or just having `cp` copy a directory recursively when it finds one. See Chapter 7 for help on providing this facility. What other programs would profit from the ability to traverse the directory tree?
