@@ -21,7 +21,7 @@ Maybe it works like this(caution: this may be totally wrong)...
 
 Here is what i find in the `pwd` source code
 
-Determine the basename of the current directory, where DOT_SB is the result of lstat'ing "." and prepend that to the file name in *FILE_NAME. Find the directory entry in `..' that matches the dev/i-node of DOT_SB. Upon success, update *DOT_SB with stat information of `..', chdir to `..', and prepend "/basename" to FILE_NAME. Otherwise, exit with a diagnostic. PARENT_HEIGHT is the number of levels `..' is above the starting directory. The first time this function is called (from the initial directory), PARENT_HEIGHT is 1.  This is solely for diagnostics. Exit nonzero upon error.
+Determine the basename of the current directory, where DOT_SB is the result of lstat'ing "." and prepend that to the file name in *FILE_NAME. Find the directory entry in `..` that matches the dev/i-node of DOT_SB. Upon success, update *DOT_SB with stat information of `..`, chdir to `..`, and prepend "/basename" to FILE_NAME. Otherwise, exit with a diagnostic. PARENT_HEIGHT is the number of levels `..` is above the starting directory. The first time this function is called (from the initial directory), PARENT_HEIGHT is 1.  This is solely for diagnostics. Exit nonzero upon error.
 
 ## Exercise 2-4.
 > `du` was written to monitor disc usage. Using it to find files in a directory hierarchy is at best a strange idiom, and perhaps inappropriate. As an alternative, look at the manual page for `find(1)`, and compare the two commands. In particular the command `du -a | grep ...` with the corresponding invocation if `find`. Which runs faster? Is it better to build a new tool or use a side effect of an old one?
@@ -61,3 +61,9 @@ $ rm junk
 
 ## Exercise 2-8.
 > `cp` doesn't copy subdirectories, it just copies files at the first level of a hierarchy. What does it do if one of the argument files is a directory? Is this kind or even sensible? Discuss the relative merits of three possibilities: an option to `cp` to descend directories, a separate command `rcp` (recursive copy) to do the job, or just having `cp` copy a directory recursively when it finds one. See Chapter 7 for help on providing this facility. What other programs would profit from the ability to traverse the directory tree?
+
+If the first argument is a dir, it will complain and won't copy.
+
+If the first argument is a file and the second is a dir, it will copy the file into the dir.
+
+I shall come back to second question when i get to Chapter 7...
