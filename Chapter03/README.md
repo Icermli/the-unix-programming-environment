@@ -7,11 +7,19 @@ $ pr file
 ```
 > (Over the years the redirection `<` has lost some ground to pipes; people seem to find `"cat file |"` more natural `"<file"`.)
 
+1. standard out of `cat file` into standard in of `pr`
+
+2. file content as the standard in of `pr`
+
+3. file as argument as `pr`
+
 ## Exercise 3-2.
 > Explain the output produced by
 ```
 $ ls .*
 ```
+
+`ls` any file or folder that start with `.`
 
 ## Exercise 3-3.
 > Predict what each of the following `grep` commands will do, then verify your understanding.
