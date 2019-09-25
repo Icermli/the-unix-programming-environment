@@ -25,10 +25,15 @@ $ ls .*
 > Predict what each of the following `grep` commands will do, then verify your understanding.
 ```
 $ grep \$                       $ grep \\
+\$ match all lines              \\ match all lines contains \
 $ grep \\$                      $ grep \\\\
+match all lines with \$         match all lines contains \\
 $ grep \\\$                     $ grep "\$"
+match all lines with \$         match all lines
 $ grep '\$'                     $ grep '"$'
+match all lines with \$         match all lines with "$
 $ grep '\'$'                    $ grep "$"
+single quote is not closing     match all lines with $
 ```
 > A file containing these commands themselves makes a good test case if you want to experiment.
 
