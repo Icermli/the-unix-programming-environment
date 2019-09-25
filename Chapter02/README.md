@@ -67,3 +67,32 @@ If the first argument is a dir, it will complain and won't copy.
 If the first argument is a file and the second is a dir, it will copy the file into the dir.
 
 I shall come back to second question when i get to Chapter 7...
+
+## Exercise 2-9.
+> Find out about the other files in `/dev` by reading Section 4 of the manual. What is the difference between `/dev/mt0` and `/dev/rmt0`? Comment on the potential advantages of having subdirectories in `/dev` for discs, tapes, etc.
+
+`/dev/rmt0` is to deal with foreign tapes.
+
+Advantages: easy to find different types of devices.
+
+## Exercise 2-10.
+> Tapes written on non-UNIX systems often have different block sizes, such as 800 bytes --- ten 80-character card images --- but the tape device `/dev/mt0` expects 512-byte blocks. Look up the `dd` command (`dd(1)`) to see how to read such a tape.
+
+Through `dd bs=512` both input and output block size is set to 512 bytes.
+
+## Exercise 2-11.
+> Why isn't `/dev/tty` just a link to your login terminal? What would happen if it were mode `rw--w--w-` like your login terminal?
+
+Others login to the machine won't have a terminal to use.
+
+Other users will not be able to read their terminal name.
+
+## Exercise 2-12.
+> How does `write(1)` work? Hint: see `utmp(5)`.
+
+Use `utmp` to find user id `ut_name[8]` and send to their login terminal `ut_line[8]`.
+
+## Exercise 2-13.
+> How can you tell if a user has been active at the terminal recently?
+
+May consider check `ut_time` of `utmp` to see user login time.
