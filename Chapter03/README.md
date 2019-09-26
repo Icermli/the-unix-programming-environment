@@ -57,6 +57,8 @@ This will show all files in subfolders in alphabetical order.
 ## Exercise 3-6.
 > (Trick question) How do you get a `/` into a filename (i.e., a `/` that doesn't separate components of the path)?
 
+The answer is that you can't, unless your filesystem has a bug. See [this](https://stackoverflow.com/questions/9847288/is-it-possible-to-use-in-a-filename).
+
 ## Exercise 3-7.
 > What happens with
 ```
@@ -68,9 +70,23 @@ $ cat x >>x
 ```
 > Think before rushing off to try them.
 
+if `x` is not empty,
+
+`cat x y >y` will loop to put content of `x` into `y`.
+
+`cat x >>x` will also loop.
+
+if `x` is empty,
+
+`cat x y >y` will cause `y` to be empty file.
+
+`cat x >>x` will cause `x` to be empty file.
+
 ## Exercise 3-8.
 > If you type
 ```
 $ rm *
 ```
 > why can't `rm` warn you that you're about to delete all your files?
+
+`*` is interpreted by shell, therefore, rm won't know they are all your files.
