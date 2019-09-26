@@ -90,3 +90,45 @@ $ rm *
 > why can't `rm` warn you that you're about to delete all your files?
 
 `*` is interpreted by shell, therefore, rm won't know they are all your files.
+
+## Exercise 3-9.
+> Look in `/bin` and `/user/bin` to see how many commands are actually shell files. Can you do it with one command? Hint: `file(1)`. How accurate are guesses based on file length?
+
+## Exercise 3-10.
+> If the backslashes are omitted in
+```
+$ echo `echo \`date\``
+```
+> what happens?
+
+## Exercise 3-11.
+> Try
+```
+$ `date`
+```
+> and explain the result.
+
+## Exercise 3-12.
+```
+$ grep -l pattern filenames
+```
+> lists the filenames in which there was a match of pattern, but produces no other output. Try some variations on
+```
+$ command `grep -l pattern filenames`
+```
+
+## Exercise 3-13.
+> Why do we always include the current directory in `PATH`? Where should it be placed?
+
+## Exercise 3-14.
+> Compare the her-document version of 411 with the original. Which is easier to maintain? Which is a better basis for a general service?
+
+## Exercise 3-15.
+> If the `diff` loop were placed in a shell file, would you put the pick in the shell file? Why or why not?
+
+## Exercise 3-16.
+> What happens if the last line of the loop above is
+```
+> done | pr | lpr &
+```
+> that is, ends with an ampersand? See if you can figure out, then try it.
