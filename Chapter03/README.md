@@ -40,12 +40,19 @@ single quote is not closing     match all lines with $
 ## Exercise 3-4.
 > How do you tell `grep` to search for a pattern beginning with a '-'? Why doesn't quoting the argument help? Hint: investigates the `-e` option.
 
+Quoting `-` still parse the literal `-`, which will be constructed as options. Try
+```
+grep -e -... file
+```
+
 ## Exercise 3-5.
 > Consider
 ```
 $ echo */*
 ```
 > Does this produce all names in all directories? In what order do the names appear?
+
+This will show all files in subfolders in alphabetical order.
 
 ## Exercise 3-6.
 > (Trick question) How do you get a `/` into a filename (i.e., a `/` that doesn't separate components of the path)?
