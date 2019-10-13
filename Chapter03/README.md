@@ -89,10 +89,15 @@ $ rm *
 ```
 > why can't `rm` warn you that you're about to delete all your files?
 
-`*` is interpreted by shell, therefore, rm won't know they are all your files.
+`*` is interpreted by shell, therefore, `rm` won't know they are all your files.
 
 ## Exercise 3-9.
 > Look in `/bin` and `/user/bin` to see how many commands are actually shell files. Can you do it with one command? Hint: `file(1)`. How accurate are guesses based on file length?
+```
+$ (file /bin/*; file /usr/bin/*) | grep 'shell script' | wc -l
+81
+$ wc -c /usr/bin/* | sort -nr | tail -n 10
+```
 
 ## Exercise 3-10.
 > If the backslashes are omitted in
@@ -100,6 +105,10 @@ $ rm *
 $ echo `echo \`date\``
 ```
 > what happens?
+```
+$ echo `echo \`date\``
+date
+```
 
 ## Exercise 3-11.
 > Try
@@ -107,6 +116,11 @@ $ echo `echo \`date\``
 $ `date`
 ```
 > and explain the result.
+```
+$ `date`
+-bash: Sun: command not found
+```
+`date` executed by shell then shell look for command `Sun`
 
 ## Exercise 3-12.
 ```
@@ -116,15 +130,21 @@ $ grep -l pattern filenames
 ```
 $ command `grep -l pattern filenames`
 ```
+```
+$ wc -c `grep -l pattern filenames`
+```
 
 ## Exercise 3-13.
 > Why do we always include the current directory in `PATH`? Where should it be placed?
+To be able to execute script in current folder. And it should be placed in beginning of `PATH`.
 
 ## Exercise 3-14.
 > Compare the her-document version of 411 with the original. Which is easier to maintain? Which is a better basis for a general service?
+The original one is easier to maintain because of no need to maintain a phone-book. Also original one is better for a general service.
 
 ## Exercise 3-15.
 > If the `diff` loop were placed in a shell file, would you put the pick in the shell file? Why or why not?
+No, `pick $*` already do a loop.
 
 ## Exercise 3-16.
 > What happens if the last line of the loop above is
@@ -132,3 +152,27 @@ $ command `grep -l pattern filenames`
 > done | pr | lpr &
 ```
 > that is, ends with an ampersand? See if you can figure out, then try it.
+
+## Exercise 3-17.
+> How would you use `bundle` to send all the files in a directory and its subdirectories? Hint: shell files can be recursive.
+```
+$ cat rbundle
+for i in $1/*
+do
+	cat $i || rbundle $i
+	cat $i && bundle $i
+done
+```
+
+## Exercise 3-18.
+> Modify `bundle` so it includes with each file the information garnered from `ls -l`, particularly permissions and date of last change. Contracts the facilities of `bundle` with the archive program `ar(1)`.
+```
+for i
+do
+    echo "echo $i 1>&2"
+    echo "echo \# `ls -l $i` >$i"
+    echo "cat >>$i <<'End of $i'"
+    cat $i
+    echo "End of $i"
+done
+```
