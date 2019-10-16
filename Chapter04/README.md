@@ -1,14 +1,36 @@
 ## Exercise 4-1.
 > Look up tagged regular expressions `(\(` and `\))` in Appendix 1 or `ed(1)`, and use `grep` to search for palindromes --- words spelled the same backwards as forwards. Hint: write a different pattern for each length of word.
+```
+$ grep -i '^\(.\)\(.\)\(.\)\3\2\1$' /usr/share/dict/words
+degged
+hallah
+kakkak
+redder
+retter
+tebbet
+terret
+```
 
 ## Exercise 4-2.
 > The structure of `grep` is to read a single line, check for a match, then loop. How would `grep` be affected if regular expressions could match newlines?
+Some matched lines may appear multiple times.
 
 ## Exercise 4-3.
 > Use the tools in this section to write a simple spelling checker, using `/usr/dict/words`. What are its shortcomings, and how would you address them?
+```
+cat $* |
+tr A-Z a-z |
+tr -sc a-z '\012' |
+sort -u >/tmp/inputwords
+grep -iw -f /tmp/inputwords /usr/share/dict/words >/tmp/outputwords
+grep -wv -f /tmp/outputwords /tmp/inputwords  
+rm -f /tmp/inputwords /tmp/outputwords
+```
 
 ## Exercise 4-4.
 > Write a word-counting program in your favorite programming language and compare its size, speed and maintainability with the word-counting pipeline. How easily can you convert it into a spelling checker.
+C++: [code](/wc.app)
+shell: [code](/wc)
 
 ## Exercise 4-5.
 > Modify `older` and `newer` so they don't include the argument file in their output. Change them so the files are listed in the opposite order.
@@ -28,3 +50,18 @@
 sed 's/[ ->][ ->]*/\
 /g' $* | sort | uniq -c | sort -nr
 ```
+
+## Exercise 4-10.
+> Modify `fold` so that it will fold lines at blanks or tabs rather than spliting a word. Make it robust for long words.
+
+## Exercise 4-11.
+> Modify `calendar` so it knows about weekends: on Friday, "tomorrow" includes Saturday, Sunday and Monday. Modify `calendar` to handle leap years. Should `calendar` know about holidays? How would you arrange it?
+
+## Exercise 4-12.
+> Should `calendar` know about dates inside a line, not just at the beginning? How about dates expressed in other formats, like 10/1/83?
+
+## Exercise 4-13.
+> Why doesn't `calendar` use `getname` instead of `$NAME`?
+
+## Exercise 4-14.
+> Write a personal version of `rm` that moves files to a temporary directory rather than deleting them, with an `at` command to clean out the directory while you are sleeping.
