@@ -1,5 +1,6 @@
 ## Exercise 4-1.
 > Look up tagged regular expressions `(\(` and `\))` in Appendix 1 or `ed(1)`, and use `grep` to search for palindromes --- words spelled the same backwards as forwards. Hint: write a different pattern for each length of word.
+
 ```
 $ grep -i '^\(.\)\(.\)\(.\)\3\2\1$' /usr/share/dict/words
 degged
@@ -13,10 +14,12 @@ terret
 
 ## Exercise 4-2.
 > The structure of `grep` is to read a single line, check for a match, then loop. How would `grep` be affected if regular expressions could match newlines?
+
 Some matched lines may appear multiple times.
 
 ## Exercise 4-3.
 > Use the tools in this section to write a simple spelling checker, using `/usr/dict/words`. What are its shortcomings, and how would you address them?
+
 ```
 cat $* |
 tr A-Z a-z |
@@ -42,6 +45,7 @@ sys	0m0.016s
 
 ## Exercise 4-5.
 > Modify `older` and `newer` so they don't include the argument file in their output. Change them so the files are listed in the opposite order.
+
 ```
 # newer f: list files newer than f
 ls -tr | sed "1,/^$1\$/d"
@@ -51,6 +55,7 @@ ls -t | sed "1,/^$1\$/d"
 
 ## Exercise 4-6.
 > Use `sed` to make the `bundle` robust. Hint: in here documents, the end-making word is recognized only when it matches the line exactly.
+
 ```
 # bundle: group files into distribution packages
 
@@ -70,6 +75,7 @@ done
 
 ## Exercise 4-7.
 > How many `awk` programs can you write that copy input to output as `cat` does? Which is the shortest?
+
 ```
 awk '{print}' file
 ```
