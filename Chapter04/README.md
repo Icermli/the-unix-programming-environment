@@ -29,17 +29,50 @@ rm -f /tmp/inputwords /tmp/outputwords
 
 ## Exercise 4-4.
 > Write a word-counting program in your favorite programming language and compare its size, speed and maintainability with the word-counting pipeline. How easily can you convert it into a spelling checker.
+
 C++: [code](/wc.app)
+real	0m0.007s
+user	0m0.003s
+sys	0m0.002s
+
 shell: [code](/wc)
+real	0m0.015s
+user	0m0.011s
+sys	0m0.016s
 
 ## Exercise 4-5.
 > Modify `older` and `newer` so they don't include the argument file in their output. Change them so the files are listed in the opposite order.
+```
+# newer f: list files newer than f
+ls -tr | sed "1,/^$1\$/d"
+# older f: list files older than f
+ls -t | sed "1,/^$1\$/d"
+```
 
 ## Exercise 4-6.
 > Use `sed` to make the `bundle` robust. Hint: in here documents, the end-making word is recognized only when it matches the line exactly.
+```
+# bundle: group files into distribution packages
+
+echo '# To unbundle, sh this file'
+for i
+do
+    echo "echo $i 1<&2"
+    # echo "cat >$i <<'End of $i'"
+    # cat $i
+    echo "cat >fake$i <<'End of $i'"
+    sed "s/End of $i/Fake End of $i/g" $i
+    echo "End of $i"
+    echo "sed \"s/Fake End of $i/End of $i/g\" fake$i >$i"
+    echo "rm -f fake$i"
+done
+```
 
 ## Exercise 4-7.
 > How many `awk` programs can you write that copy input to output as `cat` does? Which is the shortest?
+```
+awk '{print}' file
+```
 
 ## Exercise 4-8.
 > Our test of `prpages` suggests alternate implementations. Experiment to see which is fastest.
