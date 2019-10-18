@@ -1,0 +1,2 @@
+sed $'s/[ \t][ \t]*/\
+/g' $* | sort | uniq -c

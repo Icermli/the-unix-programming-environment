@@ -83,12 +83,28 @@ awk '{print}' file
 ## Exercise 4-8.
 > Our test of `prpages` suggests alternate implementations. Experiment to see which is fastest.
 
+```
+sed -n '$=' $* |
+awk '{n+=int(($1+55)/56)}
+     END        {print n}'
+```
+
 ## Exercise 4-9.
 > The output from `wordfreq` includes text formatting commands like `.CM`, which is used to print words in this font. How would you get rid of such non-words? How would you use `tr` to make `wordfreq` work properly regardless of the case of its input? Compare the implementation and performance of `wordfreq` to the pipeline from Section 4.2 and to this one:
 ```
 sed 's/[ ->][ ->]*/\
 /g' $* | sort | uniq -c | sort -nr
 ```
+
+awk version:
+real	0m0.010s
+user	0m0.004s
+sys	0m0.004s
+
+sed version:
+real	0m0.012s
+user	0m0.009s
+sys	0m0.010s
 
 ## Exercise 4-10.
 > Modify `fold` so that it will fold lines at blanks or tabs rather than spliting a word. Make it robust for long words.
