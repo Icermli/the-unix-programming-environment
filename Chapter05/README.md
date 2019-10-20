@@ -89,4 +89,34 @@ doesn't work. Explain why not, and fix it. Hint: see `eval` in `sh(1)`. How does
 > Try writing a `pick` that reads its arguments from the standard input if none are supplied on the command line. It should handle blanks properly. Does a `q` response work? If not, try the next exercise.
 
 ## Exercise 5-25.
-> Although shell
+> Although shell build-ins like `read` and `set` cannot be redirected, the shell itself can be temporarily redirected. Read the section of `sh(1)` that described `exec` and work out how to `read` from `/dev/tty` without calling a sub-shell. (It might help to read Chapter 7 first.)
+
+## Exercise 5-26.
+> (Much easier) Use `read` in your `.profile` to initialize `TERM` and whatever else depends on it, such as `tab` stops.
+
+## Exercise 5-27.
+> Add an option `-n` (notify) to `news` to report but not print the news items, and not touch `.news_time`. This might be placed in your `.profile`.
+
+## Exercise 5-28.
+> Compare our design and implementation of `news` to the similar command on your systems.
+
+## Exercise 5-29.
+> Write a command `version` that does two things:
+```
+$ version -5 file
+```
+reports the summary, modification date and person making the modification of the selected version in the history file.
+```
+$ version sep 20 file
+```
+reports which version number was current on September 20. This would typically be used in:
+```
+$ get `version sep 20 file`
+```
+(version can echo the history filename for convenience.)
+
+## Exercise 5-30.
+> Modify `get` and `put` so they manipulate the history file in a separate directory, rather than cluttering up the working directory with `.H` files.
+
+## Exercise 5-31.
+> Not all versions of a file are worth remembering once thins settle down. How can you arrange to delete versions from the middle of the history file?
