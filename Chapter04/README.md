@@ -107,16 +107,112 @@ user	0m0.009s
 sys	0m0.010s
 
 ## Exercise 4-10.
-> Modify `fold` so that it will fold lines at blanks or tabs rather than spliting a word. Make it robust for long words.
+> Modify `fold` so that it will fold lines at blanks or tabs rather than splitting a word. Make it robust for long words.
 
 ## Exercise 4-11.
 > Modify `calendar` so it knows about weekends: on Friday, "tomorrow" includes Saturday, Sunday and Monday. Modify `calendar` to handle leap years. Should `calendar` know about holidays? How would you arrange it?
 
+```
+# calendar: version 4 -- weekends and leap year
+awk <$HOME/calendar '
+BEGIN {
+    x[0] = "Jan 31 Feb 28 Mar 31 Apr 30 May 31 Jun 30 Jul 31 Aug 31 Sep 30 " \
+           "Oct 31 Nov 30 Dec 31 Jan 31"
+    x[1] = "Jan 31 Feb 29 Mar 31 Apr 30 May 31 Jun 30 Jul 31 Aug 31 Sep 30 " \
+           "Oct 31 Nov 30 Dec 31 Jan 31"
+    split("'"`date`"'", date)
+    week = date[1]; mon1 = date[2]; day1 = date[3]; year = date[6]
+    mon2 = mon1; day2 = day1 + 1
+    leap = year%4==0 && year%100==0 || year%400==0
+    split(x[leap], data)
+    for (i = 1; i < 24; i++) {
+        days[data[i]] = data[i+1]
+        nextmon[data[i]] = data[i+2]
+    }
+    if (day1 >= days[mon1]) {
+        day2 = 1
+        mon2 = nextmon[mon1]
+    }
+    day3 = day2 + 1; mon3 = mon2
+    if (day2 >= days[mon2]) {
+        day3 = 1
+        mon3 = nextmon[mon2]
+    }
+    day4 = day3 + 1; mon4 = mon3
+    if (day3 >= days[mon3]) {
+        day4 = 1
+        mon4 = nextmon[mon3]
+    }
+}
+$1 == mon1 && $2 == day1 || $1 == mon2 && $2 == day2
+week=="Fri" && ($1==mon3 && $2==day3 || $1==mon4 && $2==day4)
+'
+```
+
 ## Exercise 4-12.
 > Should `calendar` know about dates inside a line, not just at the beginning? How about dates expressed in other formats, like 10/1/83?
+
+```
+# calendar: version 4 -- weekends and leap year with 10/1/83 format
+awk <$HOME/calendar '
+BEGIN {
+    x[0] = "Jan 31 Feb 28 Mar 31 Apr 30 May 31 Jun 30 Jul 31 Aug 31 Sep 30 " \
+           "Oct 31 Nov 30 Dec 31 Jan 31"
+    x[1] = "Jan 31 Feb 29 Mar 31 Apr 30 May 31 Jun 30 Jul 31 Aug 31 Sep 30 " \
+           "Oct 31 Nov 30 Dec 31 Jan 31"
+    split("'"`date`"'", date)
+    week = date[1]; mon1 = date[2]; day1 = date[3]; year = date[6]
+    mon2 = mon1; day2 = day1 + 1
+    leap = year%4==0 && year%100==0 || year%400==0
+    split(x[leap], data)
+    for (i = 1; i < 24; i++) {
+        days[data[i]] = data[i+1]
+        nextmon[data[i]] = data[i+2]
+    }
+    if (day1 >= days[mon1]) {
+        day2 = 1
+        mon2 = nextmon[mon1]
+    }
+    day3 = day2 + 1; mon3 = mon2
+    if (day2 >= days[mon2]) {
+        day3 = 1
+        mon3 = nextmon[mon2]
+    }
+    day4 = day3 + 1; mon4 = mon3
+    if (day3 >= days[mon3]) {
+        day4 = 1
+        mon4 = nextmon[mon3]
+    }
+}
+$1 == mon1 && $2 == day1 || $1 == mon2 && $2 == day2
+week=="Fri" && ($1==mon3 && $2==day3 || $1==mon4 && $2==day4)
+$1~/..*\/..*/ {
+    split($1, ca, "/")
+    if (data[2*ca[1]-1] == mon1 && ca[2] == day1 || data[2*ca[1]-1] == mon2 && ca[2] == day2) print $0
+    if (week == "Fri" && (data[2*ca[1]-1] == mon3 && ca[2] == day3 || data[2*ca[1]-1] == mon4 && ca[2]==day4)) print $0
+}
+'
+```
 
 ## Exercise 4-13.
 > Why doesn't `calendar` use `getname` instead of `$NAME`?
 
+`$NAME` is faster than `getname`.
+
 ## Exercise 4-14.
 > Write a personal version of `rm` that moves files to a temporary directory rather than deleting them, with an `at` command to clean out the directory while you are sleeping.
+
+```
+# rm: moves files to a temporary directory
+mkdir /tmp/tmp 2>/dev/null
+mv $* /tmp/tmp/
+
+# remove: rm at 3 am
+/bin/rm -rf /tmp/tmp
+echo remove | at 5am
+```
+
+## Exercise 4-15.
+> `ps` prints an explanatory header, and `ls -l` announces the total number of blocks in the files. Comment.
+
+Normal behaviour.
