@@ -1,8 +1,22 @@
 ## Exercise 5-1.
 > If users prefer your version of `cal`, how do make it globally accessible? What has to be done to put it in `/usr/bin`?
 
+```
+$ chmod 711 cal
+# backup older version of cal in /usr/bin
+$ mv cal /usr/bin
+```
+
 ## Exercise 5-2.
-> Is it worth fixing `cal` so `cal` 83 prints the calendar for 1983? If so, how would you print the calendar for year 83?
+> Is it worth fixing `cal` so `cal 83` prints the calendar for 1983? If so, how would you print the calendar for year 83?
+
+No, not worth. If you insist, add the following:
+```
+case $y in
+??  )    y=19$y;;
+*  )    ;;
+esac
+```
 
 ## Exercise 5-3.
 > Modify `cal` to accept more than one month, as in
@@ -15,8 +29,86 @@ $ cal oct - dec
 ```
 If it's now December, and you ask for `cal jan`, should you get this year's January or next year's? When should you have stopped adding features to `cal`?
 
+```
+# cal: nicer interface to /usr/bin/cal
+
+case $# in
+0  )    set `date`; m=$2; y=$6;; # no args: use today
+1  )    m=$1; set `date`; y=$6;; # 1 arg: use this year
+2  )    m=$1; y=$2;; # 2 args: month and year
+3  )
+    case $2 in
+    [A-Za-z]*  )
+        for i in $*
+        do
+            bash $0 $i
+        done
+        ;;
+    -  )
+        m=$1; ml=$3
+        set `date`; y=$6
+
+        case $ml in
+        jan*|Jan*)  ml=1;;
+        feb*|Feb*)  ml=2;;
+        mar*|Mar*)  ml=3;;
+        apr*|Apr*)  ml=4;;
+        may*|May*)  ml=5;;
+        jun*|Jun*)  ml=6;;
+        jul*|Jul*)  ml=7;;
+        aug*|Aug*)  ml=8;;
+        sep*|Sep*)  ml=9;;
+        oct*|Oct*)  ml=10;;
+        nov*|Nov*)  ml=11;;
+        dec*|Dec*)  ml=12;;
+        $m)         ml="";;
+        $((m-12)))   m=$((m-12)); ml="";;
+        esac
+        ;;
+    esac
+    ;;
+*  )
+    for i in $*
+    do
+        bash $0 $i
+    done
+    ;;
+esac
+
+case $m in
+jan*|Jan*)  m=1;;
+feb*|Feb*)  m=2;;
+mar*|Mar*)  m=3;;
+apr*|Apr*)  m=4;;
+may*|May*)  m=5;;
+jun*|Jun*)  m=6;;
+jul*|Jul*)  m=7;;
+aug*|Aug*)  m=8;;
+sep*|Sep*)  m=9;;
+oct*|Oct*)  m=10;;
+nov*|Nov*)  m=11;;
+dec*|Dec*)  m=12;;
+[1-9]|10|11|12)  ;;
+13|14|15|16|17|18|19|20|21|22|23)  y=$((y+1));;
+*)  y=$m;m="";;
+esac
+
+case $ml in
+[1-9]|[1-2][0-9])
+    case $m in
+    13|14|15|16|17|18|19|20|21|22|23) /usr/bin/cal $((m-12)) $y;;
+    *) /usr/bin/cal $m $y;;
+    esac
+    bash $0 $((m+1)) - $ml
+    ;;
+*)  /usr/bin/cal $m $y;;
+esac
+```
+
 ## Exercise 5-4.
 > Why doesn't `which` reset `PATH` to `opath` before exiting?
+
+When you run a shell script a new `child` shell is spawned. This `child` shell will execute the script commands. The father shell environment will remain untouched by anything happens in the child shell.
 
 ## Exercise 5-5.
 > Since the shell uses `esac` to terminate a `case`, and `fi` to terminate an `if`, why does it use `done` to terminate a `do`?
@@ -24,16 +116,92 @@ If it's now December, and you ask for `cal jan`, should you get this year's Janu
 `od` is a shell script name.
 
 ## Exercise 5-6.
-> Add an option `-a` to which so it prints all files in `PATH`, rather than quiting after the first. Hint: `match='exit 0'`.
+> Add an option `-a` to `which` so it prints all files in `PATH`, rather than quiting after the first. Hint: `match='exit 0'`.
+
+```
+# which cmd: which cmd in PATH is executed
+
+opath=$PATH
+PATH=/bin:/usr/bin
+
+case $# in
+0)  echo 'Usage: which command' 1>&2; exit 2
+esac
+
+case $1 in
+-a)  rex=$2;;
+*)   rex=$1;;
+esac
+
+match='exit 1'
+
+for i in `echo $opath | sed 's/^:/.:/
+                             s/::/:.:/g
+                             s/:$/:./
+                             s/:/ /g'`
+do
+    if test -f $i/$rex
+    then
+        echo $i/$rex
+        if test "$1" == '-a'
+        then
+            match='exit 0'
+        else
+            exit 0
+    fi
+done
+
+$match
+```
 
 ## Exercise 5-7.
-> Modify which so it knows about shell built-ins like exit.
+> Modify `which` so it knows about shell built-ins like exit.
 
 ## Exercise 5-8.
-> Modify which to check for execute permissions on the files. Change it to print an error message when a file cannot be found.
+> Modify `which` to check for execute permissions on the files. Change it to print an error message when a file cannot be found.
+
+```
+# which cmd: which cmd in PATH is executed
+
+opath=$PATH
+PATH=/bin:/usr/bin
+
+case $# in
+0)  echo 'Usage: which command' 1>&2; exit 2
+esac
+
+case $1 in
+-a)  rex=$2;;
+*)   rex=$1;;
+esac
+
+match='exit 1'
+
+for i in `echo $opath | sed 's/^:/.:/
+                             s/::/:.:/g
+                             s/:$/:./
+                             s/:/ /g'`
+do
+    if test -f $i/$rex
+    then
+        echo $i/$rex
+        ls -l $i/$rex | awk '{print $1,$3,$4}'
+        if test "$1" == '-a'
+        then
+            match='exit 0'
+        else
+            exit 0
+    fi
+done
+if test "$match" == 'exit 1'
+then
+	echo "$rex not found"
+fi
+$match
+```
 
 ## Exercise 5-9.
-> Look at the implementation of true and false in `\bin` or `/usr/bin`. (How would you find our where they are?)
+> Look at the implementation of true and false in `\bin` or `/usr/bin`. (How would you find out where they are?)
 
 ## Exercise 5-10.
 > Change `watchfor` so that multiple arguments are treated as different people, rather than requiring the user to type 'joe|mary'.
