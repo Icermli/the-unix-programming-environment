@@ -143,7 +143,7 @@ do
     if test -f $i/$rex
     then
         echo $i/$rex
-        if test "$1" == '-a'
+        if test "$1" = '-a'
         then
             match='exit 0'
         else
@@ -186,14 +186,14 @@ do
     then
         echo $i/$rex
         ls -l $i/$rex | awk '{print $1,$3,$4}'
-        if test "$1" == '-a'
+        if test "$1" = '-a'
         then
             match='exit 0'
         else
             exit 0
     fi
 done
-if test "$match" == 'exit 1'
+if test "$match" = 'exit 1'
 then
 	echo "$rex not found"
 fi
@@ -201,19 +201,77 @@ $match
 ```
 
 ## Exercise 5-9.
-> Look at the implementation of true and false in `\bin` or `/usr/bin`. (How would you find out where they are?)
+> Look at the implementation of true and false in `/bin` or `/usr/bin`. (How would you find out where they are?)
+
+```
+$ which true
+/usr/bin/true
+$ which false
+/usr/bin/false
+```
 
 ## Exercise 5-10.
 > Change `watchfor` so that multiple arguments are treated as different people, rather than requiring the user to type 'joe|mary'.
 
+```
+# watchfor: watch for someone to log in
+
+PATH=/bin:/usr/bin
+
+case $# in
+0)  echo 'Usage: watchfor person' 1>&2; exit 1
+esac
+
+found=1
+until test $found -eq 0
+do
+  for i
+  do
+    if who | grep $i
+    then
+      found=0
+    fi
+  done
+  if test $found -ne 0
+  then
+    sleep 60
+  fi
+done
+```
+
 ## Exercise 5-11.
 > Write a version of `watchwho` that uses `comm` instead of `awk` to compare the old and new data. Which version do you prefer?
+
+```
+# watchwho: watch who logs in and out
+
+PATH=/bin:/usr/bin
+new=/tmp/wwho1.$$
+old=/tmp/wwho2.$$
+>$old
+
+while :
+do
+  who >$new
+  comm $old $new
+  mv $new $old
+  sleep 60
+done | awk 'BEGIN{FS="\t"}
+              $1!="" {print "out:     %s\n", $1}
+              $2!="" {print "in:      %s\n", $2}'
+```
 
 ## Exercise 5-12.
 > Write a version of `watchwho` that stores the who output in shell variables instead of files. Which version do you prefer? Which version runs faster? Should `watchwho` and `checkmail` do & automatically?
 
+[watchwho](/watchwho)
+
+I think no. They are good as a one time command.
+
 ## Exercise 5-13.
-> What is the difference between the shell : do-nothing command and the `#` comment character? Are both needed?
+> What is the difference between the shell `:` do-nothing command and the `#` comment character? Are both needed?
+
+`:` won't affect commands after it, while `#` will forbid command after it to execute.
 
 ## Exercise 5-14.
 > The version of `nohup` above combines the standard error of the command with the standard output. Is this a good design? If not, how would you separate them cleanly?

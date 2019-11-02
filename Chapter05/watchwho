@@ -1,0 +1,26 @@
+# watchwho: watch who logs in and out
+
+PATH=/bin:/usr/bin
+
+while :
+do
+  new=`who`
+  echo $new | awk '{
+    for (i=1;i<=NF;i++){
+      if(i%5==0)
+        printf "%s\n",$i
+      else
+        printf "%s ",$i
+    }
+  }' | diff <(echo -n $old) -
+  old=$(echo $new | awk '{
+    for (i=1;i<=NF;i++){
+      if(i%5==0)
+        printf "%s\n",$i
+      else
+        printf "%s ",$i
+    }
+  }')
+  sleep 60
+done | awk '/>/ { $1="in:     "; print }
+            /</ { $1="out:    "; print }'
