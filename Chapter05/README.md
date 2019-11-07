@@ -276,8 +276,22 @@ I think no. They are good as a one time command.
 ## Exercise 5-14.
 > The version of `nohup` above combines the standard error of the command with the standard output. Is this a good design? If not, how would you separate them cleanly?
 
+```
+trap "" 1 15
+if test -t 2>&1
+then
+  echo "Sending output to 'nohup.out'"
+  exec nice -5 $* >>nohup.out 2>nohup.err
+else
+  exec nice -5 $* 2>nohup.err
+```
+
 ## Exercise 5-15.
-> Look up the times shell build-in, and add a line to your `.profile` so that when log off the shell prints out how much CPU time you have used.
+> Look up the `times` shell build-in, and add a line to your `.profile` so that when log off the shell prints out how much CPU time you have used.
+
+```
+trap 'times; exit 1' 0
+```
 
 ## Exercise 5-16.
 > Write a program that will find the next available user-id in `/etc/passwd`. If you are enthusiastic (and have permission), make it into a command that will add a new user to the system. What permissions does it need? How should it handle interrupts?
@@ -289,11 +303,17 @@ trap "echo exiting; exit 1" 0 2
 sleep 10
 ```
 
+`trap 0` will cause trap to run when the script exits. Here in `overwrite`, if `trap 0`, there will be a forever loop.
+
 ## Exercise 5-18.
 > Add an option `-v` to `replace` to print all changed lines on `/dev/tty` Strong hint: `s/$left/$right/g$vflag`.
 
+[replace](/replace)
+
 ## Exercise 5-19.
 > Fix `replace` so it works regardless of the characters in the substitution strings.
+
+
 
 ## Exercise 5-20.
 > Can `replace` be used to change the variable `i` to `index` everywhere in a program? How could you change things to make this work?
