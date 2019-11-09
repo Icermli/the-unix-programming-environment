@@ -12,7 +12,7 @@ file=$1; shift
 new=/tmp/overwr1.$$; old=/tmp/overwr2.$$
 trap 'rm -f $new $old; exit 1' 1 2 15  # clean up files
 
-if PATH=$opath "$@" >$new
+if PATH=$opath eval "$@" >$new
 then
   cp $file $old  # save original file
   trap '' 1 2 15

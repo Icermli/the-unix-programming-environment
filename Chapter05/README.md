@@ -328,6 +328,8 @@ $ overwrite file 'who | sort'
 ```
 doesn't work. Explain why not, and fix it. Hint: see `eval` in `sh(1)`. How does your solution affect the interpretation of metacharacters in the command?
 
+[overwrite](/overwrite)
+
 ## Exercise 5-23.
 > Modify `zap` to print out the `ps` header from the pipeline so that it is insensitive to changes in the format of `ps` output. How much does this complicate the program?
 
