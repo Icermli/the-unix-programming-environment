@@ -1,3 +1,4 @@
+#!/bin/sh
 # watchwho: watch who logs in and out
 
 PATH=/bin:/usr/bin

@@ -1,0 +1,19 @@
+#!/bin/sh
+# pick: select arguments
+
+PATH=/bin:/usr/bin
+
+# case $# in
+# 0 )  read arg ;;
+# * )  arg=$* ;;
+# esac
+
+for i
+do
+  echo -n "$i? " >/dev/tty
+  read response
+  case $response in
+  y* )  echo $1 ;;
+  q* )  break
+  esac
+done </dev/tty

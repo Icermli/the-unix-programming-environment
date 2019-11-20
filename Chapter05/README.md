@@ -333,6 +333,8 @@ doesn't work. Explain why not, and fix it. Hint: see `eval` in `sh(1)`. How does
 ## Exercise 5-23.
 > Modify `zap` to print out the `ps` header from the pipeline so that it is insensitive to changes in the format of `ps` output. How much does this complicate the program?
 
+[zap](/zap)
+
 ## Exercise 5-24.
 > Try writing a `pick` that reads its arguments from the standard input if none are supplied on the command line. It should handle blanks properly. Does a `q` response work? If not, try the next exercise.
 

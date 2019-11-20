@@ -1,0 +1,14 @@
+#!/bin/sh
+# zap pattern: kill all processes matching pattern
+
+PATH=/bin:/usr/bin
+IFS='
+'
+
+case $1 in
+"" )  echo 'Usage: zap [-2] pattern' 1>&2; exit 1 ;;
+-* ) SIG=$1; shift
+esac
+
+echo `ps | sed -n '1p'`
+kill $SIG `pick \`ps -ag | egrep "$*"\` | awk '{print $1}'`
