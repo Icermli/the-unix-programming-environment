@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 # pick: select arguments
 
 PATH=/bin:/usr/bin
 
-# case $# in
-# 0 )  read arg ;;
-# * )  arg=$* ;;
-# esac
+case $# in
+0 )  read args ;;
+* )  args=$* ;;
+esac
 
-for i
+for i in $args
 do
   echo -n "$i? " >/dev/tty
   read response
