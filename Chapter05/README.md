@@ -347,6 +347,8 @@ doesn't work. Explain why not, and fix it. Hint: see `eval` in `sh(1)`. How does
 ## Exercise 5-27.
 > Add an option `-n` (notify) to `news` to report but not print the news items, and not touch `.news_time`. This might be placed in your `.profile`.
 
+[news](/news)
+
 ## Exercise 5-28.
 > Compare our design and implementation of `news` to the similar command on your systems.
 

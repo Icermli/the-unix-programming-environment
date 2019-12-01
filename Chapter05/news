@@ -1,0 +1,32 @@
+#!/bin/sh
+# news: print news files, final version
+
+PATH=/bin:/usr/bin
+IFS='
+'
+cd /usr/news
+
+flag=0
+case $1 in
+"-n"  )  flag=1; shift
+esac
+
+for i in `ls -t * $HOME/.news_time 2>&1`
+do
+  IFS=' '
+  case $i in
+    *' No such file or directory'  )  ;;
+    */.news_time  ) break ;;
+    *  )
+      if test $flag -eq 1
+      then
+        echo news: $i
+      else
+        set X`ls -l $i`
+        echo "
+        $i: ($3) $6 $7 $8
+        "
+        cat $i
+  esac
+done
+touch $HOME/.news_time

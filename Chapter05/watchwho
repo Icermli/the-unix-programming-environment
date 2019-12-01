@@ -8,7 +8,7 @@ do
   new=`who`
   echo $new | awk '{
     for (i=1;i<=NF;i++){
-      if(i%5==0)
+      if (i%5==0)
         printf "%s\n",$i
       else
         printf "%s ",$i
@@ -16,7 +16,7 @@ do
   }' | diff <(echo -n $old) -
   old=$(echo $new | awk '{
     for (i=1;i<=NF;i++){
-      if(i%5==0)
+      if (i%5==0)
         printf "%s\n",$i
       else
         printf "%s ",$i

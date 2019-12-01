@@ -57,4 +57,13 @@ Is this a good idea? How would you change `hoc3` to prohibit assignment to "cons
 > Modify `hoc6` to permit named formal parameters in subroutines as an alternative to `$1`, etc.
 
 ## Exercise 8-19.
-> As it stands, all variables are global except for parameters. Most of the mechanism for adding local variables maintained on the stack is already present. One approach is to have an `auto` declaration that makes space on the stack for variables listed; variables not so named are
+> As it stands, all variables are global except for parameters. Most of the mechanism for adding local variables maintained on the stack is already present. One approach is to have an `auto` declaration that makes space on the stack for variables listed; variables not so named are assumed to be global. The symbol table will also have to be extended, so that a search is made first for locals, then for globals. How does this interact with named arguments?
+
+## Exercise 8-20.
+> How would you add arrays to `hoc`? How should they be passed to functions and procedures? How are they returned?
+
+## Exercise 8-21.
+> Generalize string handling, so that variables can hold strings instead of numbers. What operators are needed? The hard part of this is storage management: making sure that strings are stored in such a way that they are freed when they are not needed, so that storage does not leak away. As an interim step, add better facilities for output formatting, for example, access to some form of the C `printf` statement.
+
+## Exercise 8-22.
+> The `push` and `popm macros` do no error checking. Comment on the wisdom of this design. How can you combine the error-checking provided by the function versions with the speed of macros?
