@@ -1,8 +1,14 @@
 ## Exercise 7-1.
 > Add a `-n` argument to `readslow` so the default sleep time can be changed to `n` seconds. Some systems provide an option `-f` ("forever") for `tail` that combines the functions of `tail` with those of `readslow`. Comment on this design.
 
+[readslow.c](/readslow.c)
+
+`tail -f` is unnecessary.
+
 ## Exercise 7-2.
 > What happens to `readslow` if the file being read is truncated? How would you fix it? Hint: read about `fstat` in Section 7.3.
+
+`readslow` will miss new added text. I shall try to fix this later when I reach 7.3.
 
 ## Exercise 7-3.
 > Modify `readslow` to handle a filename argument if one is present. Add the option `-e`:
@@ -11,8 +17,38 @@ $ readslow -e
 ```
 causes `readslow` to seek to the end of the input before beginning to read. What does `lseek` do on a pipe?
 
+[readslow.c](/readslow.c)
+
 ## Exercise 7-4.
 > Rewrite `efopen` from Chapter 6 to call `error`.
+
+```
+FILE *efopen(char *file, char *mode) {
+  FILE *fp, *fopen();
+  extern char *progname;
+
+  if ((fp = fopen(file, mode)) != NULL) {
+    return fp;
+  }
+  error("can't open %s", file);
+  exit(1);
+}
+
+void error(char *s1, char *s2) {
+  extern int errno;
+  extern const int sys_nerr;
+  extern const char *const sys_errlist[];
+  extern char *progname;
+
+  if (progname) {fprintf(stderr, "%s: ", progname);}
+  fprintf(stderr, s1, s2);
+  if (errno > 0 && errno < sys_nerr) {
+    fprintf(stderr, " (%s)", sys_errlist[errno]);
+  }
+  fprintf(stderr, "\n");
+  exit(1);
+}
+```
 
 ## Exercise 7-5.
 > How much can you improve on the heuristic for the selecting the best match in `spname`? For example, it is foolish to treat a regular file as if it were a directory; this can happen with the current version.
