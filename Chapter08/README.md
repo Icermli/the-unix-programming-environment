@@ -1,6 +1,8 @@
 ## Exercise 8-1.
 > Examine the structure of the `y.tab.c` file. (It's about 300 lines long for hoc1.)
 
+No! Its about 1600 lines long on my mac...(¯―¯٥)
+
 ## Exercise 8-2.
 > Add the operators % (modulus or remainder) and unary + to hoc1. suggestion: look at `frexp(3)`.
 

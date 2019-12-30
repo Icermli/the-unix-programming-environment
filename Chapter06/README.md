@@ -19,7 +19,7 @@ $ sed -n 1
 ## Exercise 6-4.
 > The availability of the C source code is one of the strengths of the UNIX system --- the code illustrates elegant solutions to many programming problems. Comment on the tradeoff between readability of the C source and the occasional optimizations obtained from rewriting in assembly language.
 
-C code is better in both ways, except assembly language is faster in some specified cases.
+C code is better in both ways, except assembly language is faster in some specified cases. Assembly language are prone to bugs.
 
 ## Exercise 6-5.
 > Write a program `printable` that prints the name of each argument file that contains only printable characters; if the file contains any non-printable character, the name is not printed. `printable` is useful in situations like this:
