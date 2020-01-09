@@ -76,6 +76,9 @@ char ttyin() {
 ## Exercise 6-11.
 > Modify `zap` so that any number of arguments can be supplied. As written, `zap` will normally echo the line corresponding to itself as one of the choices. Should it? If not, modify the program accordingly. Hint: `getpid(2)`.
 
+It's better not to echo the line corresponding to itself.
+[zap.c](/zap.c)
+
 ## Exercise 6-12.
 > Build as `fgrep(1)` around `strindex`. Compare running times for complicated searches, say ten words in a document. Why does `fgrep` run faster?
 

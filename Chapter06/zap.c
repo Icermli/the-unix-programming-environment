@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <unistd.h>
 char *progname; /* program name for error message */
 char *ps = "ps -a"; /* system dependent */
 
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]) {
   FILE *fin, *popen();
   char buf[BUFSIZ];
   int pid;
+  int i;
 
   progname = argv[0];
   if ((fin = popen(ps, "r")) == NULL) {
@@ -22,8 +24,19 @@ int main(int argc, char *argv[]) {
   }
   fgets(buf, sizeof buf, fin); /* get header line */
   fprintf(stderr, "%s", buf);
-  while (fgets(buf, sizeof buf, fin) != NULL) {
-    if (argc == 1 || strindex(buf, argv[1]) >= 0) {
+  while (fgets(buf, sizeof buf, fin) != NULL && atoi(buf) != getpid()) {
+    if (argc > 1) {
+      for (i = 1; i < argc; i++) {
+        if (strindex(buf, argv[i]) >= 0) {
+          buf[strlen(buf) - 1] = '\0'; /* suppress \n */
+          fprintf(stderr, "%s?", buf);
+          if (ttyin() == 'y') {
+            sscanf(buf, "%d", &pid);
+            kill(pid, SIGKILL);
+          }
+        }
+      }
+    } else {
       buf[strlen(buf) - 1] = '\0'; /* suppress \n */
       fprintf(stderr, "%s?", buf);
       if (ttyin() == 'y') {
